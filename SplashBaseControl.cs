@@ -100,7 +100,7 @@ namespace SplashBaseControl
             // TODO : Search and update
             // TODO : Add last seen column
 
-            if ((message.Length == 118) && (message[0] == 0xE1))
+            if ((message.Length == 118) && (message[0] == (byte)CommandNo.SSC_REPLY_PING))
             {
                 IpAddr = message[4].ToString() + "." + message[3].ToString() + "." + message[2].ToString() + "." + message[1].ToString();
                 MacAddr = message[10].ToString() + ":" + message[9].ToString() + ":" + message[8].ToString() + ":" + message[7].ToString() + ":" + message[6].ToString() + ":" + message[5].ToString();
@@ -129,10 +129,14 @@ namespace SplashBaseControl
                 {
  
                     // found it - update it
-                    listItem.Text = UnitName;
-                    listItem.SubItems[1].Text = IpAddr;
-                    listItem.SubItems[3].Text = swVer;
-                    listItem.SubItems[4].Text = message[36].ToString();
+                    if ( listItem.Text != UnitName ) listItem.Text = UnitName;
+                    if (listItem.SubItems[1].Text != IpAddr) listItem.SubItems[1].Text = IpAddr;
+                    if (listItem.SubItems[3].Text != swVer) listItem.SubItems[3].Text = swVer;
+                    if (listItem.SubItems[4].Text != message[36].ToString()) listItem.SubItems[4].Text = message[36].ToString();
+
+                    listItem.SubItems[5].Text = (BitConverter.ToUInt16(message, 38).ToString());
+                    listItem.SubItems[6].Text = (BitConverter.ToUInt16(message, 40).ToString());
+                    listItem.SubItems[7].Text = (BitConverter.ToUInt16(message, 42).ToString());
        
                 }
                 else
@@ -141,11 +145,25 @@ namespace SplashBaseControl
                     currentRow.SubItems.Add(IpAddr);
                     currentRow.SubItems.Add(MacAddr);
                     currentRow.SubItems.Add(swVer);
-                    currentRow.SubItems.Add(message[36].ToString());
+                    // Config
+                    currentRow.SubItems.Add(message[36].ToString());            
+
+                    currentRow.SubItems.Add(BitConverter.ToUInt16(message, 38).ToString());
+                    currentRow.SubItems.Add(BitConverter.ToUInt16(message, 40).ToString());
+                    currentRow.SubItems.Add(BitConverter.ToUInt16(message, 42).ToString());
+                }
+
+                foreach (ControlFrm controlFrm in listOfControlForms)
+                {
+                    if (controlFrm.Text.Contains(MacAddr))
+                    {
+                        controlFrm.BroadcastRecieved(message);
+                        break;
+                    }
                 }
             }
 
-            if ((message.Length == 66) && (message[0] == 0xE2))
+            if ((message.Length == 68) && (message[0] == (byte)CommandNo.SSC_REPLY_CONFIG))
             {
                 IpAddr = message[4].ToString() + "." + message[3].ToString() + "." + message[2].ToString() + "." + message[1].ToString();
                 MacAddr = message[10].ToString() + ":" + message[9].ToString() + ":" + message[8].ToString() + ":" + message[7].ToString() + ":" + message[6].ToString() + ":" + message[5].ToString();
@@ -155,48 +173,64 @@ namespace SplashBaseControl
 
                 if (listRemotesFound.Items.Count > 0)
                 {
-                    ListViewItem item = listRemotesFound.FindItemWithText(MacAddr, true, 0);
-
-                    if (item != null)
+                    listItem = null;
+                    try
                     {
-                        // found it - update it
-                        item.SubItems[1].Text = IpAddr;
-                        item.SubItems[4].Text = message[11].ToString();
+                        listItem = listRemotesFound.FindItemWithText(MacAddr, true, 0);
+                    }
+                    catch (Exception)
+                    {
+                        
+          
                     }
 
-                    EdtSubNetAddr.Text = message[29].ToString() + "." + message[28].ToString() + "." + message[27].ToString() + "." + message[26].ToString();
-                    EdtGatewayAddr.Text = message[33].ToString() + "." + message[32].ToString() + "." + message[31].ToString() + "." + message[30].ToString();
-
-                    if (item.Selected)
+                    if (listItem != null)
                     {
-                        for (i = 0; i < 5; i++)
+                        // found it - update it
+                        listItem.SubItems[1].Text = IpAddr;
+                        listItem.SubItems[4].Text = message[11].ToString();
+
+                        EdtSubNetAddr.Text = message[29].ToString() + "." + message[28].ToString() + "." + message[27].ToString() + "." + message[26].ToString();
+                        EdtGatewayAddr.Text = message[33].ToString() + "." + message[32].ToString() + "." + message[31].ToString() + "." + message[30].ToString();
+
+
+                        EdtNtpOffset.Value = (decimal)((decimal)BitConverter.ToUInt16(message, 66) / (decimal)60);
+
+                        if (listItem.Selected)
                         {
-                            try 
-	                        {
-                                if (0xFF == message[13 + i])
+                            for (i = 0; i < 5; i++)
+                            {
+                                try
                                 {
-                                    ListSolderBridges.Items[i].SubItems[1].Text = SolderBridgeNames[0];
+                                    if (0xFF == message[13 + i])
+                                    {
+                                        ListSolderBridges.Items[i].SubItems[1].Text = SolderBridgeNames[0];
+                                    }
+                                    else
+                                    {
+                                        ListSolderBridges.Items[i].SubItems[1].Text = SolderBridgeNames[message[13 + i]];
+                                    }
                                 }
-                                else
+                                catch (global::System.Exception)
                                 {
-                                    ListSolderBridges.Items[i].SubItems[1].Text = SolderBridgeNames[message[13 + i]];
+                                    ListSolderBridges.Items[i].SubItems[1].Text = message[13 + i].ToString();
                                 }
-	                        }
-	                        catch (global::System.Exception)
-	                        {
-                                ListSolderBridges.Items[i].SubItems[1].Text = message[13 + i].ToString();
-	                        }
+                            }
+
+                            for (i = 0; i < 8; i++)
+                            {
+                                ListSolderBridges.Items[i + 5].SubItems[1].Text = message[18 + i].ToString();
+                            }
+
+                            UpdateConfigDisplayFlags(message[11]);
+
+                            // Snow NTP Host name :
+                            EdNtpServerAddr.Text = System.Text.ASCIIEncoding.ASCII.GetString(message, 34, 32);
                         }
-
-                        for (i = 0; i < 8; i++)
-                        {
-                            ListSolderBridges.Items[i+5].SubItems[1].Text = message[18 + i].ToString();
-                        }
-
-                        UpdateConfigDisplayFlags(message[11]);
-
-                        // Snow NTP Host name :
-                        EdNtpServerAddr.Text = System.Text.ASCIIEncoding.ASCII.GetString(message, 34, 32);
+                    }
+                    else
+                    {
+                        // We dont have this unit on the list
                     }
                 }
             }
@@ -348,11 +382,11 @@ namespace SplashBaseControl
             // 0x80 - Static IP if set
             if ((configByte & 0x80) == 0x01)
             {
-                ChkDynamicIp.Checked = false;
+                ChkDynamicIp.Checked = true;
             }
             else
             {
-                ChkDynamicIp.Checked = true;
+                ChkDynamicIp.Checked = false;
             }
 
             // 0x40 - Use Custom NTP Server
@@ -612,6 +646,60 @@ namespace SplashBaseControl
             byteString[0] = 0xff;
 
             coms.Command(byteString, byteString.Length, IPAddress.Parse(SelectedSplashBaseIp));
+        }
+
+        private void defaultConfigToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SplashBaseComs coms = new SplashBaseComs();
+
+            byte[] byteString = System.Text.Encoding.ASCII.GetBytes("\0default");
+            byteString[0] = 0xff;
+
+            coms.Command(byteString, byteString.Length, IPAddress.Parse(SelectedSplashBaseIp));
+        }
+
+        public void ControlRemote(string macaddr, string ipaddr)
+        {
+            bool foundIt = false;
+
+            foreach (ControlFrm controlFrm in listOfControlForms)
+            {
+                if (controlFrm.Text.Contains(macaddr))
+                {
+                    foundIt = true;
+                    controlFrm.WindowState = FormWindowState.Normal;
+                    controlFrm.SetMacAndIp(macaddr, ipaddr);
+                    controlFrm.BringToFront();
+                    break;
+                }
+            }
+
+            if (foundIt == false)
+            {
+                // Open a control window for the remote
+                ControlFrm newFrm = new ControlFrm();
+                listOfControlForms.Add(newFrm);
+                newFrm.SetMacAndIp(macaddr, ipaddr);
+                newFrm.SetParent(this);
+                newFrm.Show();
+            }
+        }
+
+        private void listRemotesFound_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+
+            if (listRemotesFound.SelectedItems.Count > 0)
+            {
+                ControlRemote(listRemotesFound.SelectedItems[0].SubItems[2].Text, listRemotesFound.SelectedItems[0].SubItems[1].Text);
+            }
+        }
+
+        private void ButPwm_Click(object sender, EventArgs e)
+        {
+            if (listRemotesFound.SelectedItems.Count > 0)
+            {
+                ControlRemote(listRemotesFound.SelectedItems[0].SubItems[2].Text, listRemotesFound.SelectedItems[0].SubItems[1].Text);
+            }
         }
 
     }

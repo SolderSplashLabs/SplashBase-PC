@@ -59,5 +59,12 @@ namespace SplashBaseControl.Properties {
                 resourceCulture = value;
             }
         }
+        
+        internal static System.Drawing.Bitmap io_chart_SM3 {
+            get {
+                object obj = ResourceManager.GetObject("io_chart_SM3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

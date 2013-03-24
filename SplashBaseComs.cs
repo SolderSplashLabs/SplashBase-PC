@@ -7,9 +7,38 @@ using System.Net.NetworkInformation;
 
 namespace SplashBaseControl
 {
+    enum CommandNo
+    {
+        SSC_PING = 1,						// Check the Unit is there
+        SSC_EXTENDED_PING,					// Get Extended Info
+        SSC_RELAY_CON = 10,					// Control it's relays
+        SSC_PWM_DUTY,						// Duty for a single PWM
+        SSC_PWM_DUTY_ALL,					// Duty for a PWMs
+        SSC_PWM_FREQ,						// Set Freq of the PWMs masked
+        SSC_PWM_COLOUR_MODE,				// Use a colour mode to control the PWMs
+        SSC_SET_UNIT_NAME = 0x20,
+        SSC_SET_RELAY_NAME,					// Set the supplied relay no's name
+        SSC_SET_CONFIG,
+        SSC_OUTPUTS_ON_OFF = 0x30,			// Control all outputs, turn if on/off
+        SSC_SPLASHPIXEL_FBSET = 0x45,		// Set the SplashPixel Framebuffer
+        SSC_MANUAL_GPIO_DIR = 0x50, 		// Set gpio direction, 1 output
+        SSC_MANUAL_GPIO_DATA = 0x51, 		// set gpio outputs high or low
+        SSC_LOGIC_COMMAND = 0x60,
+        SSC_LOGIC_INSERT_CON = 0x61,		// Insert a command
+        SSC_BRIDGE_SCAN = 0x80,
+        SSC_SB_SERVOPOS = 0x90,
+
+        SSC_REPLY_PING = 0xE1,
+        SSC_REPLY_CONFIG = 0xE2,
+
+        SSC_RESET = 0xFF
+    }
+
     class SplashBaseComs
     {
         const int REMOTE_PORT_NO = 11028;
+
+        
 
         public bool Command(byte[] buffer, int size, IPAddress address)
         {
