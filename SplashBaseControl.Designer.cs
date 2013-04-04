@@ -29,55 +29,62 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem66 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
             "SPI CS0",
             ""}, -1);
-            System.Windows.Forms.ListViewItem listViewItem67 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
             "SPI CS1",
             ""}, -1);
-            System.Windows.Forms.ListViewItem listViewItem68 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem(new string[] {
             "SPI CS2",
             ""}, -1);
-            System.Windows.Forms.ListViewItem listViewItem69 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem(new string[] {
             "SPI CS3",
             ""}, -1);
-            System.Windows.Forms.ListViewItem listViewItem70 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem(new string[] {
             "SPI CS4",
             ""}, -1);
-            System.Windows.Forms.ListViewItem listViewItem71 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem(new string[] {
             "I2C 0x20",
             ""}, -1);
-            System.Windows.Forms.ListViewItem listViewItem72 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem(new string[] {
             "I2C 0x21",
             ""}, -1);
-            System.Windows.Forms.ListViewItem listViewItem73 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem(new string[] {
             "I2C 0x22",
             ""}, -1);
-            System.Windows.Forms.ListViewItem listViewItem74 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem(new string[] {
             "I2C 0x23",
             ""}, -1);
-            System.Windows.Forms.ListViewItem listViewItem75 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem10 = new System.Windows.Forms.ListViewItem(new string[] {
             "I2C 0x24",
             ""}, -1);
-            System.Windows.Forms.ListViewItem listViewItem76 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem11 = new System.Windows.Forms.ListViewItem(new string[] {
             "I2C 0x25",
             ""}, -1);
-            System.Windows.Forms.ListViewItem listViewItem77 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem12 = new System.Windows.Forms.ListViewItem(new string[] {
             "I2C 0x26",
             ""}, -1);
-            System.Windows.Forms.ListViewItem listViewItem78 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem13 = new System.Windows.Forms.ListViewItem(new string[] {
             "I2C 0x27",
             ""}, -1);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SplashBaseControl));
             this.listRemotesFound = new System.Windows.Forms.ListView();
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ColConfig = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ColADC0 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ColADC1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ColADC2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.rebootToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bootloadModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.defaultConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GrpSplashBase = new System.Windows.Forms.GroupBox();
+            this.ButSaveConfig = new System.Windows.Forms.Button();
             this.ButRefreshExtendedInfo = new System.Windows.Forms.Button();
             this.EdtSetName = new System.Windows.Forms.Button();
             this.ButApply = new System.Windows.Forms.Button();
@@ -111,14 +118,11 @@
             this.label4 = new System.Windows.Forms.Label();
             this.ChkUserGpioInit = new System.Windows.Forms.CheckBox();
             this.ButFindSplashBases = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.ButLogic = new System.Windows.Forms.Button();
+            this.ButGpio = new System.Windows.Forms.Button();
             this.ButPwm = new System.Windows.Forms.Button();
-            this.ColADC0 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.ColADC1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.ColADC2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.defaultConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.GrpSplashBase.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -148,6 +152,7 @@
             this.listRemotesFound.TabIndex = 9;
             this.listRemotesFound.UseCompatibleStateImageBehavior = false;
             this.listRemotesFound.View = System.Windows.Forms.View.Details;
+            this.listRemotesFound.SelectedIndexChanged += new System.EventHandler(this.listRemotesFound_SelectedIndexChanged);
             this.listRemotesFound.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listRemotesFound_MouseClick);
             this.listRemotesFound.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listRemotesFound_MouseDoubleClick);
             // 
@@ -175,9 +180,25 @@
             this.ColConfig.Text = "Config";
             this.ColConfig.Width = 0;
             // 
+            // ColADC0
+            // 
+            this.ColADC0.Text = "ADC0";
+            this.ColADC0.Width = 50;
+            // 
+            // ColADC1
+            // 
+            this.ColADC1.Text = "ADC1";
+            this.ColADC1.Width = 50;
+            // 
+            // ColADC2
+            // 
+            this.ColADC2.Text = "ADC2";
+            this.ColADC2.Width = 50;
+            // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
             this.rebootToolStripMenuItem,
             this.bootloadModeToolStripMenuItem,
             this.toolStripMenuItem2,
@@ -185,26 +206,39 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.contextMenuStrip1.ShowImageMargin = false;
-            this.contextMenuStrip1.Size = new System.Drawing.Size(132, 98);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(145, 98);
             // 
             // rebootToolStripMenuItem
             // 
             this.rebootToolStripMenuItem.Name = "rebootToolStripMenuItem";
-            this.rebootToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.rebootToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.rebootToolStripMenuItem.Text = "Reboot";
             this.rebootToolStripMenuItem.Click += new System.EventHandler(this.rebootToolStripMenuItem_Click);
             // 
             // bootloadModeToolStripMenuItem
             // 
             this.bootloadModeToolStripMenuItem.Name = "bootloadModeToolStripMenuItem";
-            this.bootloadModeToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.bootloadModeToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.bootloadModeToolStripMenuItem.Text = "Bootload Mode";
             this.bootloadModeToolStripMenuItem.Click += new System.EventHandler(this.bootloadModeToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(141, 6);
+            // 
+            // defaultConfigToolStripMenuItem
+            // 
+            this.defaultConfigToolStripMenuItem.Name = "defaultConfigToolStripMenuItem";
+            this.defaultConfigToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.defaultConfigToolStripMenuItem.Text = "Default Config";
+            this.defaultConfigToolStripMenuItem.Click += new System.EventHandler(this.defaultConfigToolStripMenuItem_Click);
             // 
             // GrpSplashBase
             // 
             this.GrpSplashBase.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.GrpSplashBase.Controls.Add(this.ButSaveConfig);
             this.GrpSplashBase.Controls.Add(this.ButRefreshExtendedInfo);
             this.GrpSplashBase.Controls.Add(this.EdtSetName);
             this.GrpSplashBase.Controls.Add(this.ButApply);
@@ -229,6 +263,18 @@
             this.GrpSplashBase.TabStop = false;
             this.GrpSplashBase.Text = "Selected SplashBase";
             // 
+            // ButSaveConfig
+            // 
+            this.ButSaveConfig.Location = new System.Drawing.Point(262, 283);
+            this.ButSaveConfig.Name = "ButSaveConfig";
+            this.ButSaveConfig.Size = new System.Drawing.Size(102, 38);
+            this.ButSaveConfig.TabIndex = 11;
+            this.ButSaveConfig.Text = "Save Config";
+            this.toolTip1.SetToolTip(this.ButSaveConfig, "Commits the current configuration to non volatile memory.  So that they can be us" +
+                    "ed upon next booting");
+            this.ButSaveConfig.UseVisualStyleBackColor = true;
+            this.ButSaveConfig.Click += new System.EventHandler(this.ButSaveConfig_Click);
+            // 
             // ButRefreshExtendedInfo
             // 
             this.ButRefreshExtendedInfo.Location = new System.Drawing.Point(8, 283);
@@ -251,11 +297,12 @@
             // 
             // ButApply
             // 
-            this.ButApply.Location = new System.Drawing.Point(243, 283);
+            this.ButApply.Location = new System.Drawing.Point(135, 283);
             this.ButApply.Name = "ButApply";
             this.ButApply.Size = new System.Drawing.Size(121, 38);
             this.ButApply.TabIndex = 11;
             this.ButApply.Text = "Apply Changes";
+            this.toolTip1.SetToolTip(this.ButApply, "Apply the current selected configuration");
             this.ButApply.UseVisualStyleBackColor = true;
             this.ButApply.Click += new System.EventHandler(this.ButApply_Click);
             // 
@@ -465,19 +512,19 @@
             this.columnHeader6});
             this.ListSolderBridges.FullRowSelect = true;
             this.ListSolderBridges.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem66,
-            listViewItem67,
-            listViewItem68,
-            listViewItem69,
-            listViewItem70,
-            listViewItem71,
-            listViewItem72,
-            listViewItem73,
-            listViewItem74,
-            listViewItem75,
-            listViewItem76,
-            listViewItem77,
-            listViewItem78});
+            listViewItem1,
+            listViewItem2,
+            listViewItem3,
+            listViewItem4,
+            listViewItem5,
+            listViewItem6,
+            listViewItem7,
+            listViewItem8,
+            listViewItem9,
+            listViewItem10,
+            listViewItem11,
+            listViewItem12,
+            listViewItem13});
             this.ListSolderBridges.LabelEdit = true;
             this.ListSolderBridges.Location = new System.Drawing.Point(6, 19);
             this.ListSolderBridges.Name = "ListSolderBridges";
@@ -574,29 +621,34 @@
             this.ButFindSplashBases.UseVisualStyleBackColor = true;
             this.ButFindSplashBases.Click += new System.EventHandler(this.ButFindSplashBases_Click);
             // 
-            // button2
+            // ButLogic
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button2.Location = new System.Drawing.Point(282, 116);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(129, 38);
-            this.button2.TabIndex = 11;
-            this.button2.Text = "Configure LOGIC";
-            this.button2.UseVisualStyleBackColor = true;
+            this.ButLogic.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.ButLogic.Enabled = false;
+            this.ButLogic.Location = new System.Drawing.Point(282, 116);
+            this.ButLogic.Name = "ButLogic";
+            this.ButLogic.Size = new System.Drawing.Size(129, 38);
+            this.ButLogic.TabIndex = 11;
+            this.ButLogic.Text = "Configure LOGIC";
+            this.ButLogic.UseVisualStyleBackColor = true;
+            this.ButLogic.Click += new System.EventHandler(this.ButLogic_Click);
             // 
-            // button3
+            // ButGpio
             // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button3.Location = new System.Drawing.Point(147, 116);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(129, 38);
-            this.button3.TabIndex = 11;
-            this.button3.Text = "GPIO Control";
-            this.button3.UseVisualStyleBackColor = true;
+            this.ButGpio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.ButGpio.Enabled = false;
+            this.ButGpio.Location = new System.Drawing.Point(147, 116);
+            this.ButGpio.Name = "ButGpio";
+            this.ButGpio.Size = new System.Drawing.Size(129, 38);
+            this.ButGpio.TabIndex = 11;
+            this.ButGpio.Text = "GPIO Control";
+            this.ButGpio.UseVisualStyleBackColor = true;
+            this.ButGpio.Click += new System.EventHandler(this.button3_Click);
             // 
             // ButPwm
             // 
             this.ButPwm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.ButPwm.Enabled = false;
             this.ButPwm.Location = new System.Drawing.Point(552, 116);
             this.ButPwm.Name = "ButPwm";
             this.ButPwm.Size = new System.Drawing.Size(129, 38);
@@ -605,32 +657,12 @@
             this.ButPwm.UseVisualStyleBackColor = true;
             this.ButPwm.Click += new System.EventHandler(this.ButPwm_Click);
             // 
-            // ColADC0
+            // toolStripMenuItem1
             // 
-            this.ColADC0.Text = "ADC0";
-            this.ColADC0.Width = 50;
-            // 
-            // ColADC1
-            // 
-            this.ColADC1.Text = "ADC1";
-            this.ColADC1.Width = 50;
-            // 
-            // ColADC2
-            // 
-            this.ColADC2.Text = "ADC2";
-            this.ColADC2.Width = 50;
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(128, 6);
-            // 
-            // defaultConfigToolStripMenuItem
-            // 
-            this.defaultConfigToolStripMenuItem.Name = "defaultConfigToolStripMenuItem";
-            this.defaultConfigToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
-            this.defaultConfigToolStripMenuItem.Text = "Default Config";
-            this.defaultConfigToolStripMenuItem.Click += new System.EventHandler(this.defaultConfigToolStripMenuItem_Click);
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(144, 22);
+            this.toolStripMenuItem1.Text = "Get Configuration";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // SplashBaseControl
             // 
@@ -638,16 +670,17 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(694, 505);
             this.Controls.Add(this.ButPwm);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.ButGpio);
+            this.Controls.Add(this.ButLogic);
             this.Controls.Add(this.ButFindSplashBases);
             this.Controls.Add(this.GrpSplashBase);
             this.Controls.Add(this.listRemotesFound);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(710, 1024);
             this.MinimumSize = new System.Drawing.Size(16, 540);
             this.Name = "SplashBaseControl";
-            this.Text = "[SolderSplash LABS] SplashBase Locate & Control v1.0 [Beta]";
+            this.Text = "[SolderSplash LABS] SplashBase Locate & Control v1.0.3 [Beta]";
             this.Load += new System.EventHandler(this.SplashBaseControl_Load);
             this.Shown += new System.EventHandler(this.SplashBaseControl_Shown);
             this.contextMenuStrip1.ResumeLayout(false);
@@ -682,8 +715,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button ButLogic;
+        private System.Windows.Forms.Button ButGpio;
         private System.Windows.Forms.Button ButPwm;
         private System.Windows.Forms.Button ButRescanBridges;
         private System.Windows.Forms.GroupBox groupBox3;
@@ -714,6 +747,9 @@
         private System.Windows.Forms.ColumnHeader ColADC2;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem defaultConfigToolStripMenuItem;
+        private System.Windows.Forms.Button ButSaveConfig;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
     }
 }
 

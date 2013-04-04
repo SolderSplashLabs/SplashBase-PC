@@ -14,6 +14,21 @@
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.3.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -34,6 +49,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>soldersplash3_256.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>SplashBaseControl.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,6 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnumUtils.cs" />
     <Compile Include="ColorWheel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -56,7 +78,19 @@
     <Compile Include="ControlFrm.designer.cs">
       <DependentUpon>ControlFrm.cs</DependentUpon>
     </Compile>
+    <Compile Include="GpioControlFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GpioControlFrm.Designer.cs">
+      <DependentUpon>GpioControlFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="HsvColor.cs" />
+    <Compile Include="LogicControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LogicControl.Designer.cs">
+      <DependentUpon>LogicControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="RgbColor.cs" />
     <Compile Include="SplashBaseComs.cs" />
     <Compile Include="SplashBaseControl.cs">
@@ -70,6 +104,12 @@
     <EmbeddedResource Include="ColourWheel.resx" />
     <EmbeddedResource Include="ControlFrm.resx">
       <DependentUpon>ControlFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GpioControlFrm.resx">
+      <DependentUpon>GpioControlFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogicControl.resx">
+      <DependentUpon>LogicControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SplashBaseControl.resx">
       <DependentUpon>SplashBaseControl.cs</DependentUpon>
@@ -97,7 +137,25 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ColourWheel.Designer.vb" />
+    <Content Include="soldersplash3_256.ico" />
     <None Include="Resources\io chart SM3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

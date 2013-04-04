@@ -16,6 +16,7 @@ namespace SplashBaseControl
     public partial class SplashBaseControl : Form
     {
         ArrayList listOfControlForms = new ArrayList();
+        ArrayList listOfGpioControlForms = new ArrayList();
         ArrayList listOfLogicForms = new ArrayList();
         
         string[] SolderBridgeNames = {"None", "24 Servo", "DMX Master", "0-10v", "Datalogger", "9Dof"};
@@ -29,6 +30,24 @@ namespace SplashBaseControl
         Boolean BroadcastUpdatingFlag = false;
 
         string SelectedSplashBaseIp = "";
+
+        public void SplashBaseSelectionChanged ( bool selected, string MacAddr, String IpAddr )
+        {
+            if (selected)
+            {
+                GrpSplashBase.Text = "Selected SplashBase : " + MacAddr;
+                ButGpio.Enabled = true;
+                ButPwm.Enabled = true;
+                //ButLogic.Enabled = true;
+            }
+            else
+            {
+                GrpSplashBase.Text = "No SplashBase Selected";
+                ButGpio.Enabled = false;
+                ButPwm.Enabled = false;
+                ButLogic.Enabled = false;
+            }
+        }
 
         private void ReceiveMessage()
         {
@@ -55,7 +74,7 @@ namespace SplashBaseControl
 
             listRemotesFound.Items.Clear();
 
-            data[0] = 1;
+            data[0] = (byte)CommandNo.SSC_PING;
             data[1] = Convert.ToByte('H');
             data[2] = Convert.ToByte('e');
             data[3] = Convert.ToByte('l');
@@ -189,7 +208,7 @@ namespace SplashBaseControl
                         // found it - update it
                         listItem.SubItems[1].Text = IpAddr;
                         listItem.SubItems[4].Text = message[11].ToString();
-
+                        
                         EdtSubNetAddr.Text = message[29].ToString() + "." + message[28].ToString() + "." + message[27].ToString() + "." + message[26].ToString();
                         EdtGatewayAddr.Text = message[33].ToString() + "." + message[32].ToString() + "." + message[31].ToString() + "." + message[30].ToString();
 
@@ -235,86 +254,72 @@ namespace SplashBaseControl
                 }
             }
 
-            if (((message.Length == 52) || (message.Length == 99)) && (message[0] == 224))
+            if ((message.Length == 164) && (message[0] == (byte)CommandNo.SSC_REPLY_ALL_GPIO))
             {
-                BroadcastUpdatingFlag = true;
-
-                IpAddr = message[4].ToString() + "." + message[3].ToString() + "." + message[2].ToString() + "." + message[1].ToString();
                 MacAddr = message[10].ToString() + ":" + message[9].ToString() + ":" + message[8].ToString() + ":" + message[7].ToString() + ":" + message[6].ToString() + ":" + message[5].ToString();
-
                 MacAddr = BitConverter.ToString(message, 5, 6);
                 MacAddr = MacAddr.Replace("-", ":");
 
-                swVer = BitConverter.ToString(message, 11, 2);
-                swVer = message[11].ToString() + "." + message[12].ToString();
-
-                // TODO : Check Length
-                UnitName = System.Text.ASCIIEncoding.ASCII.GetString(message, 31, message[30]);
-
-
-                if ((listRemotesFound.Items.Count > 0) && (listRemotesFound.FindItemWithText(MacAddr, true, 0) != null))
+                foreach (GpioControlFrm controlFrm in listOfGpioControlForms)
                 {
-                    // found it - update it
-                }
-                else
-                {
-                    currentRow = listRemotesFound.Items.Add(UnitName);
-                    currentRow.SubItems.Add(IpAddr);
-                    currentRow.SubItems.Add(MacAddr);
-                    currentRow.SubItems.Add(swVer);
-                    currentRow.SubItems.Add(message[13].ToString());
-                }
-
-                /*
-                foreach (ControlFrm controlFrm in listOfControlForms)
-                {
-                    if (controlFrm.Text.Contains(IpAddr))
+                    if (controlFrm.Text.Contains(MacAddr))
                     {
-                        controlFrm.BroadcastRecieved(message);
+                        controlFrm.GpioTableRecvd(message);
                         break;
                     }
                 }
-                */
             }
-            else if (message[0] == 225)
+
+            if ((message.Length == 230) && (message[0] == (byte)CommandNo.SSC_REPLY_LOGIC_ACT))
             {
-                // Port info
-
-                IpAddr = message[4].ToString() + "." + message[3].ToString() + "." + message[2].ToString() + "." + message[1].ToString();
                 MacAddr = message[10].ToString() + ":" + message[9].ToString() + ":" + message[8].ToString() + ":" + message[7].ToString() + ":" + message[6].ToString() + ":" + message[5].ToString();
-
                 MacAddr = BitConverter.ToString(message, 5, 6);
                 MacAddr = MacAddr.Replace("-", ":");
 
-                swVer = BitConverter.ToString(message, 11, 2);
-                swVer = message[11].ToString() + "." + message[12].ToString();
-
-                // TODO : Check Length
-                UnitName = "Unknown";
-
-                if ((listRemotesFound.Items.Count > 0) && (listRemotesFound.FindItemWithText(MacAddr, true, 0) != null))
+                foreach (LogicControlFrm controlFrm in listOfLogicForms)
                 {
-                    // found it - update it
-                }
-                else
-                {
-                    currentRow = listRemotesFound.Items.Add(UnitName);
-                    currentRow.SubItems.Add(IpAddr);
-                    currentRow.SubItems.Add(MacAddr);
-                    currentRow.SubItems.Add(swVer);
-                }
-
-                /*
-                foreach (ControlFrm controlFrm in listOfControlForms)
-                {
-                    if (controlFrm.Text.Contains(IpAddr))
+                    if (controlFrm.Text.Contains(MacAddr))
                     {
-                        controlFrm.BroadcastRecieved(message);
+                        controlFrm.ActionTableRecvd(message);
                         break;
                     }
                 }
-                */
             }
+
+            if ((message.Length == 230) && (message[0] == (byte)CommandNo.SSC_REPLY_LOGIC_COND))
+            {
+                MacAddr = message[10].ToString() + ":" + message[9].ToString() + ":" + message[8].ToString() + ":" + message[7].ToString() + ":" + message[6].ToString() + ":" + message[5].ToString();
+                MacAddr = BitConverter.ToString(message, 5, 6);
+                MacAddr = MacAddr.Replace("-", ":");
+
+                foreach (LogicControlFrm controlFrm in listOfLogicForms)
+                {
+                    if (controlFrm.Text.Contains(MacAddr))
+                    {
+                        controlFrm.ConditionTableRecvd(message);
+                        break;
+                    }
+                }
+            }
+
+            if ((message.Length == 158) && (message[0] == (byte)CommandNo.SSC_REPLY_LOGIC_EVENTS))
+            {
+                MacAddr = message[10].ToString() + ":" + message[9].ToString() + ":" + message[8].ToString() + ":" + message[7].ToString() + ":" + message[6].ToString() + ":" + message[5].ToString();
+                MacAddr = BitConverter.ToString(message, 5, 6);
+                MacAddr = MacAddr.Replace("-", ":");
+
+                foreach (LogicControlFrm controlFrm in listOfLogicForms)
+                {
+                    if (controlFrm.Text.Contains(MacAddr))
+                    {
+                        controlFrm.EventTableRecvd(message);
+                        break;
+                    }
+                }
+            }
+
+           
+           
 
             BroadcastUpdatingFlag = false;
         }
@@ -326,6 +331,7 @@ namespace SplashBaseControl
 
         private void ButFindSplashBases_Click(object sender, EventArgs e)
         {
+            GrpSplashBase.Enabled = false;
             SendBroadCastPing();
         }
 
@@ -382,11 +388,11 @@ namespace SplashBaseControl
             // 0x80 - Static IP if set
             if ((configByte & 0x80) == 0x01)
             {
-                ChkDynamicIp.Checked = true;
+                ChkDynamicIp.Checked = false;
             }
             else
             {
-                ChkDynamicIp.Checked = false;
+                ChkDynamicIp.Checked = true;
             }
 
             // 0x40 - Use Custom NTP Server
@@ -468,11 +474,12 @@ namespace SplashBaseControl
         {
             byte configBits = 0;
 
-            ClearConfigDisplay();
+            //ClearConfigDisplay();
 
             if (listRemotesFound.SelectedItems.Count > 0)
             {
                 // Row selected
+                SplashBaseSelectionChanged(true, listRemotesFound.SelectedItems[0].SubItems[2].Text, listRemotesFound.SelectedItems[0].SubItems[1].Text);
                 GrpSplashBase.Enabled = true;
 
                 try
@@ -495,6 +502,9 @@ namespace SplashBaseControl
             }
             else
             {
+                //GrpSplashBase.Enabled = false;
+                //ClearConfigDisplay();
+                SplashBaseSelectionChanged(false, null, null);
                 GrpSplashBase.Enabled = false;
                 ClearConfigDisplay();
             }
@@ -505,7 +515,7 @@ namespace SplashBaseControl
             SplashBaseComs coms = new SplashBaseComs();
             byte[] dataBytes = new byte[2];
 
-            dataBytes[0] = 0x80;
+            dataBytes[0] = (byte)CommandNo.SSC_BRIDGE_SCAN;
             dataBytes[1] = 0xFF;
 
             coms.Command(dataBytes, dataBytes.Length, IPAddress.Parse(SelectedSplashBaseIp));
@@ -531,7 +541,7 @@ namespace SplashBaseControl
             byte[] byteString = System.Text.Encoding.ASCII.GetBytes(tempStr);
             int nameLen = byteString.Length;
 
-            byteString[0] = 0x20;
+            byteString[0] = (byte)CommandNo.SSC_SET_UNIT_NAME;
             byteString[1] = lengthOfStr;
             try
             {
@@ -569,7 +579,7 @@ namespace SplashBaseControl
             UInt16 ntpOffset;
             IPAddress address;
 
-            comsBytes[0] = 0x22;
+            comsBytes[0] = (byte)CommandNo.SSC_SET_CONFIG;
 
             comsBytes[1] = packConfigByte();
             comsBytes[2] = 0;
@@ -633,7 +643,7 @@ namespace SplashBaseControl
             SplashBaseComs coms = new SplashBaseComs();
 
             byte[] byteString = System.Text.Encoding.ASCII.GetBytes( "\0kick" );
-            byteString[0] = 0xff;
+            byteString[0] = (byte)CommandNo.SSC_RESET;
 
             coms.Command(byteString, byteString.Length, IPAddress.Parse(SelectedSplashBaseIp));
         }
@@ -643,7 +653,7 @@ namespace SplashBaseControl
             SplashBaseComs coms = new SplashBaseComs();
 
             byte[] byteString = System.Text.Encoding.ASCII.GetBytes("\0reflash");
-            byteString[0] = 0xff;
+            byteString[0] = (byte)CommandNo.SSC_RESET;
 
             coms.Command(byteString, byteString.Length, IPAddress.Parse(SelectedSplashBaseIp));
         }
@@ -653,7 +663,7 @@ namespace SplashBaseControl
             SplashBaseComs coms = new SplashBaseComs();
 
             byte[] byteString = System.Text.Encoding.ASCII.GetBytes("\0default");
-            byteString[0] = 0xff;
+            byteString[0] = (byte)CommandNo.SSC_RESET;
 
             coms.Command(byteString, byteString.Length, IPAddress.Parse(SelectedSplashBaseIp));
         }
@@ -685,6 +695,60 @@ namespace SplashBaseControl
             }
         }
 
+        public void GpioControlRemote(string macaddr, string ipaddr)
+        {
+            bool foundIt = false;
+
+            foreach (GpioControlFrm controlFrm in listOfGpioControlForms)
+            {
+                if (controlFrm.Text.Contains(macaddr))
+                {
+                    foundIt = true;
+                    controlFrm.WindowState = FormWindowState.Normal;
+                    controlFrm.SetMacAndIp(macaddr, ipaddr);
+                    controlFrm.BringToFront();
+                    break;
+                }
+            }
+
+            if (foundIt == false)
+            {
+                // Open a control window for the remote
+                GpioControlFrm newFrm = new GpioControlFrm();
+                listOfGpioControlForms.Add(newFrm);
+                newFrm.SetMacAndIp(macaddr, ipaddr);
+                newFrm.SetParent(this);
+                newFrm.Show();
+            }
+        }
+
+        public void LogicControlRemote(string macaddr, string ipaddr)
+        {
+            bool foundIt = false;
+
+            foreach (LogicControlFrm controlFrm in listOfLogicForms)
+            {
+                if (controlFrm.Text.Contains(macaddr))
+                {
+                    foundIt = true;
+                    controlFrm.WindowState = FormWindowState.Normal;
+                    controlFrm.SetMacAndIp(macaddr, ipaddr);
+                    controlFrm.BringToFront();
+                    break;
+                }
+            }
+
+            if (foundIt == false)
+            {
+                // Open a control window for the remote
+                LogicControlFrm newFrm = new LogicControlFrm();
+                listOfLogicForms.Add(newFrm);
+                newFrm.SetMacAndIp(macaddr, ipaddr);
+                newFrm.SetParent(this);
+                newFrm.Show();
+            }
+        }
+
         private void listRemotesFound_MouseDoubleClick(object sender, MouseEventArgs e)
         {
 
@@ -699,6 +763,56 @@ namespace SplashBaseControl
             if (listRemotesFound.SelectedItems.Count > 0)
             {
                 ControlRemote(listRemotesFound.SelectedItems[0].SubItems[2].Text, listRemotesFound.SelectedItems[0].SubItems[1].Text);
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (listRemotesFound.SelectedItems.Count > 0)
+            {
+                GpioControlRemote(listRemotesFound.SelectedItems[0].SubItems[2].Text, listRemotesFound.SelectedItems[0].SubItems[1].Text);
+            }
+        }
+
+        private void ButSaveConfig_Click(object sender, EventArgs e)
+        {
+            SplashBaseComs coms = new SplashBaseComs();
+            byte[] dataBytes = new byte[1];
+
+            dataBytes[0] = (byte)CommandNo.SSC_SAVE_CONFIG;
+            
+            coms.Command(dataBytes, dataBytes.Length, IPAddress.Parse(SelectedSplashBaseIp));
+        }
+
+        private void listRemotesFound_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+            if (listRemotesFound.SelectedItems.Count > 0)
+            {
+                //SplashBaseSelectionChanged(true, listRemotesFound.SelectedItems[0].SubItems[2].Text, listRemotesFound.SelectedItems[0].SubItems[1].Text);
+                //GrpSplashBase.Enabled = true;
+            }
+            else
+            {
+                SplashBaseSelectionChanged(false, null, null);
+                GrpSplashBase.Enabled = false;
+                ClearConfigDisplay();
+            }
+        }
+
+        private void ButLogic_Click(object sender, EventArgs e)
+        {
+            if (listRemotesFound.SelectedItems.Count > 0)
+            {
+                LogicControlRemote(listRemotesFound.SelectedItems[0].SubItems[2].Text, listRemotesFound.SelectedItems[0].SubItems[1].Text);
+            }
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (listRemotesFound.SelectedItems.Count > 0)
+            {
+                UpdateSplashBaseInfo(IPAddress.Parse(listRemotesFound.SelectedItems[0].SubItems[1].Text));
             }
         }
 

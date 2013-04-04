@@ -19,17 +19,35 @@ namespace SplashBaseControl
         SSC_SET_UNIT_NAME = 0x20,
         SSC_SET_RELAY_NAME,					// Set the supplied relay no's name
         SSC_SET_CONFIG,
+        SSC_SAVE_CONFIG,
         SSC_OUTPUTS_ON_OFF = 0x30,			// Control all outputs, turn if on/off
         SSC_SPLASHPIXEL_FBSET = 0x45,		// Set the SplashPixel Framebuffer
         SSC_MANUAL_GPIO_DIR = 0x50, 		// Set gpio direction, 1 output
         SSC_MANUAL_GPIO_DATA = 0x51, 		// set gpio outputs high or low
+        SSC_MANUAL_GPIO_CONF = 0x52, 		// set gpio dir and outputs
+        SSC_GET_ALL_GPIO = 0x53,
+        SSC_INIT_GPIO_CONF = 0x54, 		    // set init gpio dir and outputs
+        SSC_INIT_GPIO_RUN = 0x55,
         SSC_LOGIC_COMMAND = 0x60,
         SSC_LOGIC_INSERT_CON = 0x61,		// Insert a command
+        SSC_LOGIC_EDT_ACT = 0x62,		    // Add/Edit an action
+        SSC_LOGIC_EDT_COND = 0x63,          // Add/Edit a condition
+        SSC_LOGIC_EDT_EVENT = 0x64,         // Add/Edit an event
+
+        SSC_LOGIC_READ_ACTION = 0x65,
+        SSC_LOGIC_READ_CONDTION = 0x66,
+        SSC_LOGIC_READ_EVENTS = 0x67,
+
         SSC_BRIDGE_SCAN = 0x80,
         SSC_SB_SERVOPOS = 0x90,
 
         SSC_REPLY_PING = 0xE1,
         SSC_REPLY_CONFIG = 0xE2,
+        SSC_REPLY_ALL_GPIO = 0xE3,
+
+        SSC_REPLY_LOGIC_ACT = 0xE4,
+        SSC_REPLY_LOGIC_COND = 0xE5,
+        SSC_REPLY_LOGIC_EVENTS = 0xE6,
 
         SSC_RESET = 0xFF
     }

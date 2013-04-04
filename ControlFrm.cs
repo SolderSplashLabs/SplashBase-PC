@@ -49,7 +49,7 @@ namespace SplashBaseControl
         public void SetMacAndIp( string MAC, string Ip )
         {
             textBox1.Text = Ip;
-            //this.;
+            
             this.Text = "[SolderSplash LABS] PWM, RGB & Relay Control - " + MAC;
         }
 
@@ -354,11 +354,7 @@ namespace SplashBaseControl
 
                     }
                 }
-                else if (message[0] == 225)
-                {
-                    listGpio.Items[13].SubItems[3].Text = BitConverter.ToUInt32(message, 68).ToString("X");
-                    listGpio.Items[14].SubItems[3].Text = BitConverter.ToUInt32(message, 72).ToString("X");
-                }
+           
             }
             finally
             {
