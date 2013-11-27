@@ -79,10 +79,12 @@
             this.ColADC1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ColADC2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.rebootToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bootloadModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.defaultConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.GrpSplashBase = new System.Windows.Forms.GroupBox();
             this.ButSaveConfig = new System.Windows.Forms.Button();
             this.ButRefreshExtendedInfo = new System.Windows.Forms.Button();
@@ -122,7 +124,8 @@
             this.ButGpio = new System.Windows.Forms.Button();
             this.ButPwm = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.EdtDnsAddr = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.contextMenuStrip1.SuspendLayout();
             this.GrpSplashBase.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -148,7 +151,7 @@
             this.listRemotesFound.FullRowSelect = true;
             this.listRemotesFound.Location = new System.Drawing.Point(12, 12);
             this.listRemotesFound.Name = "listRemotesFound";
-            this.listRemotesFound.Size = new System.Drawing.Size(670, 98);
+            this.listRemotesFound.Size = new System.Drawing.Size(670, 158);
             this.listRemotesFound.TabIndex = 9;
             this.listRemotesFound.UseCompatibleStateImageBehavior = false;
             this.listRemotesFound.View = System.Windows.Forms.View.Details;
@@ -202,11 +205,19 @@
             this.rebootToolStripMenuItem,
             this.bootloadModeToolStripMenuItem,
             this.toolStripMenuItem2,
-            this.defaultConfigToolStripMenuItem});
+            this.defaultConfigToolStripMenuItem,
+            this.toolStripSeparator1});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.contextMenuStrip1.ShowImageMargin = false;
-            this.contextMenuStrip1.Size = new System.Drawing.Size(145, 98);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(145, 104);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(144, 22);
+            this.toolStripMenuItem1.Text = "Get Configuration";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // rebootToolStripMenuItem
             // 
@@ -234,6 +245,11 @@
             this.defaultConfigToolStripMenuItem.Text = "Default Config";
             this.defaultConfigToolStripMenuItem.Click += new System.EventHandler(this.defaultConfigToolStripMenuItem_Click);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(141, 6);
+            // 
             // GrpSplashBase
             // 
             this.GrpSplashBase.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
@@ -256,16 +272,16 @@
             this.GrpSplashBase.Controls.Add(this.label4);
             this.GrpSplashBase.Controls.Add(this.ChkUserGpioInit);
             this.GrpSplashBase.Enabled = false;
-            this.GrpSplashBase.Location = new System.Drawing.Point(12, 160);
+            this.GrpSplashBase.Location = new System.Drawing.Point(12, 220);
             this.GrpSplashBase.Name = "GrpSplashBase";
-            this.GrpSplashBase.Size = new System.Drawing.Size(670, 333);
+            this.GrpSplashBase.Size = new System.Drawing.Size(670, 346);
             this.GrpSplashBase.TabIndex = 10;
             this.GrpSplashBase.TabStop = false;
             this.GrpSplashBase.Text = "Selected SplashBase";
             // 
             // ButSaveConfig
             // 
-            this.ButSaveConfig.Location = new System.Drawing.Point(262, 283);
+            this.ButSaveConfig.Location = new System.Drawing.Point(262, 299);
             this.ButSaveConfig.Name = "ButSaveConfig";
             this.ButSaveConfig.Size = new System.Drawing.Size(102, 38);
             this.ButSaveConfig.TabIndex = 11;
@@ -277,7 +293,7 @@
             // 
             // ButRefreshExtendedInfo
             // 
-            this.ButRefreshExtendedInfo.Location = new System.Drawing.Point(8, 283);
+            this.ButRefreshExtendedInfo.Location = new System.Drawing.Point(8, 299);
             this.ButRefreshExtendedInfo.Name = "ButRefreshExtendedInfo";
             this.ButRefreshExtendedInfo.Size = new System.Drawing.Size(121, 38);
             this.ButRefreshExtendedInfo.TabIndex = 11;
@@ -297,7 +313,7 @@
             // 
             // ButApply
             // 
-            this.ButApply.Location = new System.Drawing.Point(135, 283);
+            this.ButApply.Location = new System.Drawing.Point(135, 299);
             this.ButApply.Name = "ButApply";
             this.ButApply.Size = new System.Drawing.Size(121, 38);
             this.ButApply.TabIndex = 11;
@@ -308,6 +324,8 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.EdtDnsAddr);
+            this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.EdtNtpOffset);
             this.groupBox3.Controls.Add(this.EdNtpServerAddr);
             this.groupBox3.Controls.Add(this.EdtGatewayAddr);
@@ -322,7 +340,7 @@
             this.groupBox3.Controls.Add(this.ChkDynamicIp);
             this.groupBox3.Location = new System.Drawing.Point(6, 45);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(366, 134);
+            this.groupBox3.Size = new System.Drawing.Size(366, 158);
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "SplashBase Network Config";
@@ -335,7 +353,7 @@
             0,
             0,
             65536});
-            this.EdtNtpOffset.Location = new System.Drawing.Point(233, 100);
+            this.EdtNtpOffset.Location = new System.Drawing.Point(233, 126);
             this.EdtNtpOffset.Maximum = new decimal(new int[] {
             24,
             0,
@@ -352,7 +370,7 @@
             // 
             // EdNtpServerAddr
             // 
-            this.EdNtpServerAddr.Location = new System.Drawing.Point(84, 100);
+            this.EdNtpServerAddr.Location = new System.Drawing.Point(84, 126);
             this.EdNtpServerAddr.Name = "EdNtpServerAddr";
             this.EdNtpServerAddr.Size = new System.Drawing.Size(133, 20);
             this.EdNtpServerAddr.TabIndex = 3;
@@ -367,7 +385,7 @@
             // ChkNtpEnabled
             // 
             this.ChkNtpEnabled.AutoSize = true;
-            this.ChkNtpEnabled.Location = new System.Drawing.Point(233, 74);
+            this.ChkNtpEnabled.Location = new System.Drawing.Point(233, 102);
             this.ChkNtpEnabled.Name = "ChkNtpEnabled";
             this.ChkNtpEnabled.Size = new System.Drawing.Size(116, 17);
             this.ChkNtpEnabled.TabIndex = 0;
@@ -377,7 +395,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(10, 103);
+            this.label7.Location = new System.Drawing.Point(9, 129);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(69, 13);
             this.label7.TabIndex = 4;
@@ -395,7 +413,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(293, 102);
+            this.label9.Location = new System.Drawing.Point(293, 129);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(61, 13);
             this.label9.TabIndex = 2;
@@ -445,7 +463,7 @@
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(225, 249);
+            this.dateTimePicker1.Location = new System.Drawing.Point(225, 265);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(139, 20);
             this.dateTimePicker1.TabIndex = 3;
@@ -454,7 +472,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(293, 212);
+            this.label3.Location = new System.Drawing.Point(293, 228);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(30, 13);
             this.label3.TabIndex = 2;
@@ -464,7 +482,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(222, 208);
+            this.label2.Location = new System.Drawing.Point(222, 224);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(76, 13);
             this.label2.TabIndex = 2;
@@ -474,7 +492,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(222, 230);
+            this.label1.Location = new System.Drawing.Point(222, 246);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(71, 13);
             this.label1.TabIndex = 2;
@@ -487,14 +505,14 @@
             this.groupBox2.Controls.Add(this.ListSolderBridges);
             this.groupBox2.Location = new System.Drawing.Point(378, 19);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(284, 308);
+            this.groupBox2.Size = new System.Drawing.Size(284, 318);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "SPI/I2C SolderBridges :";
             // 
             // ButRescanBridges
             // 
-            this.ButRescanBridges.Location = new System.Drawing.Point(6, 264);
+            this.ButRescanBridges.Location = new System.Drawing.Point(6, 274);
             this.ButRescanBridges.Name = "ButRescanBridges";
             this.ButRescanBridges.Size = new System.Drawing.Size(272, 38);
             this.ButRescanBridges.TabIndex = 11;
@@ -528,7 +546,7 @@
             this.ListSolderBridges.LabelEdit = true;
             this.ListSolderBridges.Location = new System.Drawing.Point(6, 19);
             this.ListSolderBridges.Name = "ListSolderBridges";
-            this.ListSolderBridges.Size = new System.Drawing.Size(272, 239);
+            this.ListSolderBridges.Size = new System.Drawing.Size(272, 249);
             this.ListSolderBridges.TabIndex = 10;
             this.ListSolderBridges.UseCompatibleStateImageBehavior = false;
             this.ListSolderBridges.View = System.Windows.Forms.View.Details;
@@ -546,7 +564,7 @@
             // ChkLogic
             // 
             this.ChkLogic.AutoSize = true;
-            this.ChkLogic.Location = new System.Drawing.Point(19, 260);
+            this.ChkLogic.Location = new System.Drawing.Point(19, 276);
             this.ChkLogic.Name = "ChkLogic";
             this.ChkLogic.Size = new System.Drawing.Size(100, 17);
             this.ChkLogic.TabIndex = 0;
@@ -564,7 +582,7 @@
             // ChkPwmEn
             // 
             this.ChkPwmEn.AutoSize = true;
-            this.ChkPwmEn.Location = new System.Drawing.Point(19, 237);
+            this.ChkPwmEn.Location = new System.Drawing.Point(19, 253);
             this.ChkPwmEn.Name = "ChkPwmEn";
             this.ChkPwmEn.Size = new System.Drawing.Size(95, 17);
             this.ChkPwmEn.TabIndex = 0;
@@ -574,7 +592,7 @@
             // ChkRGBEnabled
             // 
             this.ChkRGBEnabled.AutoSize = true;
-            this.ChkRGBEnabled.Location = new System.Drawing.Point(120, 237);
+            this.ChkRGBEnabled.Location = new System.Drawing.Point(120, 253);
             this.ChkRGBEnabled.Name = "ChkRGBEnabled";
             this.ChkRGBEnabled.Size = new System.Drawing.Size(119, 17);
             this.ChkRGBEnabled.TabIndex = 0;
@@ -584,7 +602,7 @@
             // ChkFourRelay
             // 
             this.ChkFourRelay.AutoSize = true;
-            this.ChkFourRelay.Location = new System.Drawing.Point(19, 214);
+            this.ChkFourRelay.Location = new System.Drawing.Point(19, 230);
             this.ChkFourRelay.Name = "ChkFourRelay";
             this.ChkFourRelay.Size = new System.Drawing.Size(182, 17);
             this.ChkFourRelay.TabIndex = 0;
@@ -603,7 +621,7 @@
             // ChkUserGpioInit
             // 
             this.ChkUserGpioInit.AutoSize = true;
-            this.ChkUserGpioInit.Location = new System.Drawing.Point(19, 191);
+            this.ChkUserGpioInit.Location = new System.Drawing.Point(19, 207);
             this.ChkUserGpioInit.Name = "ChkUserGpioInit";
             this.ChkUserGpioInit.Size = new System.Drawing.Size(134, 17);
             this.ChkUserGpioInit.TabIndex = 0;
@@ -613,7 +631,7 @@
             // ButFindSplashBases
             // 
             this.ButFindSplashBases.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.ButFindSplashBases.Location = new System.Drawing.Point(12, 116);
+            this.ButFindSplashBases.Location = new System.Drawing.Point(12, 176);
             this.ButFindSplashBases.Name = "ButFindSplashBases";
             this.ButFindSplashBases.Size = new System.Drawing.Size(129, 38);
             this.ButFindSplashBases.TabIndex = 11;
@@ -625,7 +643,7 @@
             // 
             this.ButLogic.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.ButLogic.Enabled = false;
-            this.ButLogic.Location = new System.Drawing.Point(282, 116);
+            this.ButLogic.Location = new System.Drawing.Point(282, 176);
             this.ButLogic.Name = "ButLogic";
             this.ButLogic.Size = new System.Drawing.Size(129, 38);
             this.ButLogic.TabIndex = 11;
@@ -637,7 +655,7 @@
             // 
             this.ButGpio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.ButGpio.Enabled = false;
-            this.ButGpio.Location = new System.Drawing.Point(147, 116);
+            this.ButGpio.Location = new System.Drawing.Point(147, 176);
             this.ButGpio.Name = "ButGpio";
             this.ButGpio.Size = new System.Drawing.Size(129, 38);
             this.ButGpio.TabIndex = 11;
@@ -649,7 +667,7 @@
             // 
             this.ButPwm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.ButPwm.Enabled = false;
-            this.ButPwm.Location = new System.Drawing.Point(552, 116);
+            this.ButPwm.Location = new System.Drawing.Point(552, 176);
             this.ButPwm.Name = "ButPwm";
             this.ButPwm.Size = new System.Drawing.Size(129, 38);
             this.ButPwm.TabIndex = 11;
@@ -657,24 +675,33 @@
             this.ButPwm.UseVisualStyleBackColor = true;
             this.ButPwm.Click += new System.EventHandler(this.ButPwm_Click);
             // 
-            // toolStripMenuItem1
+            // EdtDnsAddr
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(144, 22);
-            this.toolStripMenuItem1.Text = "Get Configuration";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            this.EdtDnsAddr.Location = new System.Drawing.Point(84, 100);
+            this.EdtDnsAddr.Name = "EdtDnsAddr";
+            this.EdtDnsAddr.Size = new System.Drawing.Size(133, 20);
+            this.EdtDnsAddr.TabIndex = 6;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(10, 103);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(73, 13);
+            this.label10.TabIndex = 7;
+            this.label10.Text = "DNS Server : ";
             // 
             // SplashBaseControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(694, 505);
+            this.ClientSize = new System.Drawing.Size(694, 578);
+            this.Controls.Add(this.GrpSplashBase);
             this.Controls.Add(this.ButPwm);
+            this.Controls.Add(this.listRemotesFound);
             this.Controls.Add(this.ButGpio);
             this.Controls.Add(this.ButLogic);
             this.Controls.Add(this.ButFindSplashBases);
-            this.Controls.Add(this.GrpSplashBase);
-            this.Controls.Add(this.listRemotesFound);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(710, 1024);
@@ -750,6 +777,9 @@
         private System.Windows.Forms.Button ButSaveConfig;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.TextBox EdtDnsAddr;
+        private System.Windows.Forms.Label label10;
     }
 }
 

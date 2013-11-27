@@ -26,7 +26,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.3.%2a</ApplicationVersion>
+    <ApplicationVersion>1.0.4.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -68,6 +68,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TablessControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="EnumUtils.cs" />
     <Compile Include="ColorWheel.cs">
       <SubType>UserControl</SubType>
@@ -90,6 +93,9 @@
     </Compile>
     <Compile Include="LogicControl.Designer.cs">
       <DependentUpon>LogicControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="myNumericUpDown.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="RgbColor.cs" />
     <Compile Include="SplashBaseComs.cs" />

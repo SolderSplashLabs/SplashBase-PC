@@ -38,7 +38,7 @@ namespace SplashBaseControl
                 GrpSplashBase.Text = "Selected SplashBase : " + MacAddr;
                 ButGpio.Enabled = true;
                 ButPwm.Enabled = true;
-                //ButLogic.Enabled = true;
+                ButLogic.Enabled = true;
             }
             else
             {
@@ -211,7 +211,7 @@ namespace SplashBaseControl
                         
                         EdtSubNetAddr.Text = message[29].ToString() + "." + message[28].ToString() + "." + message[27].ToString() + "." + message[26].ToString();
                         EdtGatewayAddr.Text = message[33].ToString() + "." + message[32].ToString() + "." + message[31].ToString() + "." + message[30].ToString();
-
+                        EdtDnsAddr.Text = EdtGatewayAddr.Text;
 
                         EdtNtpOffset.Value = (decimal)((decimal)BitConverter.ToUInt16(message, 66) / (decimal)60);
 
@@ -238,7 +238,20 @@ namespace SplashBaseControl
 
                             for (i = 0; i < 8; i++)
                             {
-                                ListSolderBridges.Items[i + 5].SubItems[1].Text = message[18 + i].ToString();
+                                if (message[18 + i] > 0x20)
+                                {
+                                    byte bridgeAddr = (byte)(message[18 + i] - (byte)0x20);
+
+                                    if (bridgeAddr < 8)
+                                    {
+                                        ListSolderBridges.Items[5 + bridgeAddr].SubItems[1].Text = "GPIO Expander - PORT " + (char)(0x48 + bridgeAddr);
+                                    }
+                                }
+                                else
+                                {
+                                    //ListSolderBridges.Items[i + 5].SubItems[1].Text = "None";
+                                }
+
                             }
 
                             UpdateConfigDisplayFlags(message[11]);
@@ -260,11 +273,11 @@ namespace SplashBaseControl
                 MacAddr = BitConverter.ToString(message, 5, 6);
                 MacAddr = MacAddr.Replace("-", ":");
 
-                foreach (GpioControlFrm controlFrm in listOfGpioControlForms)
+                foreach (GpioControlFrm gpioControlFrm in listOfGpioControlForms)
                 {
-                    if (controlFrm.Text.Contains(MacAddr))
+                    if (gpioControlFrm.Text.Contains(MacAddr))
                     {
-                        controlFrm.GpioTableRecvd(message);
+                        gpioControlFrm.GpioTableRecvd(message);
                         break;
                     }
                 }
@@ -331,7 +344,10 @@ namespace SplashBaseControl
 
         private void ButFindSplashBases_Click(object sender, EventArgs e)
         {
+            SplashBaseComs coms = new SplashBaseComs();
+
             GrpSplashBase.Enabled = false;
+            //coms.BroadcastPing();
             SendBroadCastPing();
         }
 
@@ -350,12 +366,14 @@ namespace SplashBaseControl
 
         private void SplashBaseControl_Shown(object sender, EventArgs e)
         {
+            SplashBaseComs coms = new SplashBaseComs();
+
             myDelegate = new ProcessMessageDelegate(ProcessMessage);
             thread = new Thread(new ThreadStart(ReceiveMessage));
             thread.IsBackground = true;
             thread.Start();
 
-            SendBroadCastPing();
+            coms.BroadcastPing();
         }
 
         /// <summary>
@@ -373,7 +391,7 @@ namespace SplashBaseControl
 
             for (i=0; i<ListSolderBridges.Items.Count; i++)
             {
-                ListSolderBridges.Items[i].SubItems[1].Text = "";
+                ListSolderBridges.Items[i].SubItems[1].Text = "None";
             }
             ChkDynamicIp.Checked = false;
             ChkUserGpioInit.Checked = false;
@@ -486,6 +504,7 @@ namespace SplashBaseControl
                 {
                     EdtSplashBaseName.Text = listRemotesFound.SelectedItems[0].Text;
                     EdtIpAddr.Text = listRemotesFound.SelectedItems[0].SubItems[1].Text;
+
                     configBits = Convert.ToByte(listRemotesFound.SelectedItems[0].SubItems[4].Text);
 
                     SelectedSplashBaseIp = listRemotesFound.SelectedItems[0].SubItems[1].Text;
@@ -526,6 +545,13 @@ namespace SplashBaseControl
             if (listRemotesFound.SelectedItems.Count > 0)
             {
                 UpdateSplashBaseInfo(IPAddress.Parse(SelectedSplashBaseIp));
+
+                //remove debug cmd..
+                SplashBaseComs coms = new SplashBaseComs();
+                byte[] testarray = new byte[1400];
+
+                coms.TestUDPMEssage(testarray, 1400, IPAddress.Parse("224.0.0.251"), 1900);
+               
             }
         }
 
@@ -615,10 +641,16 @@ namespace SplashBaseControl
             comsBytes[15] = 0;  // Gateway
             */
 
+            address = IPAddress.Parse(EdtDnsAddr.Text);
+            byte[] dnsIp = address.GetAddressBytes();
+            Buffer.BlockCopy(dnsIp, 0, comsBytes, 16, 4);
+           
+            /*            
             comsBytes[16] = 0;  // Spare
             comsBytes[17] = 0;  // Spare
             comsBytes[18] = 0;  // Spare
             comsBytes[19] = 0;  // Spare
+            */
 
             // Limit String length
             if (ntpServerStringLen > 31) ntpServerStringLen = 31;
@@ -699,14 +731,14 @@ namespace SplashBaseControl
         {
             bool foundIt = false;
 
-            foreach (GpioControlFrm controlFrm in listOfGpioControlForms)
+            foreach (GpioControlFrm gpioControlFrm in listOfGpioControlForms)
             {
-                if (controlFrm.Text.Contains(macaddr))
+                if (gpioControlFrm.Text.Contains(macaddr))
                 {
                     foundIt = true;
-                    controlFrm.WindowState = FormWindowState.Normal;
-                    controlFrm.SetMacAndIp(macaddr, ipaddr);
-                    controlFrm.BringToFront();
+                    gpioControlFrm.WindowState = FormWindowState.Normal;
+                    gpioControlFrm.SetMacAndIp(macaddr, ipaddr);
+                    gpioControlFrm.BringToFront();
                     break;
                 }
             }
@@ -815,6 +847,43 @@ namespace SplashBaseControl
                 UpdateSplashBaseInfo(IPAddress.Parse(listRemotesFound.SelectedItems[0].SubItems[1].Text));
             }
         }
+
+        public void removeMeFromGpioFormList(string MacAddress)
+        {
+            foreach (GpioControlFrm gpioControlFrm in listOfGpioControlForms)
+            {
+                if (gpioControlFrm.Text.Contains(MacAddress))
+                {
+                    listOfGpioControlForms.Remove(gpioControlFrm);
+                    break;
+                }
+            }
+        }
+
+        public void removeMeFromControlFormList (string MacAddress)
+        {
+            foreach (ControlFrm controlFrm in listOfControlForms)
+            {
+                if (controlFrm.Text.Contains(MacAddress))
+                {
+                    listOfControlForms.Remove(controlFrm);
+                    break;
+                }
+            }
+        }
+
+        public void removeMeFromLogicFormList(string MacAddress)
+        {
+            foreach (ControlFrm logicControlFrm in listOfLogicForms)
+            {
+                if (logicControlFrm.Text.Contains(MacAddress))
+                {
+                    listOfLogicForms.Remove(logicControlFrm);
+                    break;
+                }
+            }
+        }
+
 
     }
 }

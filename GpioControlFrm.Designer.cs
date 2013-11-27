@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GpioControlFrm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.listGpioList = new System.Windows.Forms.ListView();
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -52,7 +53,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.EdtPortPins = new System.Windows.Forms.TextBox();
             this.EdtDirection = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.grpSelectGpio.SuspendLayout();
             this.SuspendLayout();
@@ -70,6 +70,15 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "GPIO Viewer";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 324);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(153, 13);
+            this.label5.TabIndex = 15;
+            this.label5.Text = "Direction : 1 = Output 0 = Input";
             // 
             // textBox1
             // 
@@ -272,15 +281,6 @@
             this.EdtDirection.TabIndex = 0;
             this.EdtDirection.TextChanged += new System.EventHandler(this.EdtDirection_TextChanged);
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 324);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(153, 13);
-            this.label5.TabIndex = 15;
-            this.label5.Text = "Direction : 1 = Output 0 = Input";
-            // 
             // GpioControlFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -293,6 +293,7 @@
             this.MaximizeBox = false;
             this.Name = "GpioControlFrm";
             this.Text = "[SolderSplash Labs] GPIO Viewer";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GpioControlFrm_FormClosing);
             this.Load += new System.EventHandler(this.GpioControlFrm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

@@ -16,6 +16,8 @@ namespace SplashBaseControl
     public partial class GpioControlFrm : Form
     {
         SplashBaseControl MyParent;
+        String MacAddr;
+        String IpAddr;
 
         public GpioControlFrm()
         {
@@ -30,6 +32,8 @@ namespace SplashBaseControl
         public void SetMacAndIp(string MAC, string Ip)
         {
             textBox1.Text = Ip;
+            MacAddr = MAC;
+            IpAddr = Ip;
 
             this.Text = "[SolderSplash LABS] GPIO Control - " + MAC;
         }
@@ -222,6 +226,11 @@ namespace SplashBaseControl
             command[0] = (byte)CommandNo.SSC_INIT_GPIO_RUN;
 
             coms.Command(command, command.Length, IPAddress.Parse(textBox1.Text));
+        }
+
+        private void GpioControlFrm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            MyParent.removeMeFromGpioFormList(MacAddr);
         }
 
 

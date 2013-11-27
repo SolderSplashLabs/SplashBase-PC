@@ -37,6 +37,7 @@ namespace SplashBaseControl
         SSC_LOGIC_READ_ACTION = 0x65,
         SSC_LOGIC_READ_CONDTION = 0x66,
         SSC_LOGIC_READ_EVENTS = 0x67,
+        SSC_LOGIC_READ = 0x68,
 
         SSC_BRIDGE_SCAN = 0x80,
         SSC_SB_SERVOPOS = 0x90,
@@ -56,7 +57,15 @@ namespace SplashBaseControl
     {
         const int REMOTE_PORT_NO = 11028;
 
-        
+        public bool TestUDPMEssage(byte[] buffer, int size, IPAddress address, int port)
+        {
+            IPEndPoint ipep = new IPEndPoint(address, port);
+            Socket server = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+
+            server.SendTo(buffer, size, SocketFlags.None, ipep);
+
+            return true;
+        }
 
         public bool Command(byte[] buffer, int size, IPAddress address)
         {

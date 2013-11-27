@@ -17,6 +17,9 @@ namespace SplashBaseControl
     {
         const int REMOTE_PORT_NO = 11028;
         SplashBaseControl MyParent;
+        String MacAddr;
+        String IpAddr;
+
         Boolean BroadcastUpdatingFlag = false;
 
         enum ColourModes
@@ -49,6 +52,8 @@ namespace SplashBaseControl
         public void SetMacAndIp( string MAC, string Ip )
         {
             textBox1.Text = Ip;
+            MacAddr = MAC;
+            IpAddr = Ip;
             
             this.Text = "[SolderSplash LABS] PWM, RGB & Relay Control - " + MAC;
         }
@@ -283,8 +288,11 @@ namespace SplashBaseControl
                     if (message.Length == 118)
                     {
                         BroadcastUpdatingFlag = true;
-
-                        trackBar4.Value = BitConverter.ToUInt16(message, 51);
+                        // THis can crash if any are out of range
+                        if (( BitConverter.ToUInt16(message, 51) >= trackBar4.Minimum ) && ( BitConverter.ToUInt16(message, 51) <= trackBar4.Minimum ))
+                        {
+                            trackBar4.Value = BitConverter.ToUInt16(message, 51);
+                        }
                         trackBar1.Value = BitConverter.ToUInt16(message, 45);
                         trackBar2.Value = BitConverter.ToUInt16(message, 47);
                         trackBar3.Value = BitConverter.ToUInt16(message, 49);
@@ -780,6 +788,8 @@ namespace SplashBaseControl
         private void ControlFrm_FormClosing(object sender, FormClosingEventArgs e)
         {
             tmrAutoRefresh.Enabled = false;
+
+            MyParent.removeMeFromControlFormList(MacAddr);
         }
 
         private void tmrAutoRefresh_Tick(object sender, EventArgs e)
